@@ -1,322 +1,204 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Rollo Digital con Galería Avanzada</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rollo Digital sin Animación y Ajuste Completo</title>
+<style>
+  * { box-sizing: border-box; }
 
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      background: #111;
-      font-family: Arial, sans-serif;
-      color: white;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      user-select: none;
-    }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background: #111; color: #fff;
+    font-family: Arial, sans-serif;
+    overflow: hidden; display: flex;
+    flex-direction: column; align-items: center;
+    user-select: none;
+  }
 
-    h1 {
-      margin: 15px 0 10px;
-    }
+  h1 { margin: 15px 0 10px; }
 
-    .gallery-container {
-      position: relative;
-      width: 100vw;
-      height: 80vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
+  .gallery-container {
+    position: relative;
+    width: 100vw; height: 80vh;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; padding: 0 64px;
+  }
 
-    /* Imagen grande central */
-    .main-image {
-      width: 70vw;
-      height: 80vh;
-      border-radius: 10px;
-      box-shadow: 0 0 25px rgba(255,255,255,0.6);
-      background-position: center;
-      background-size: cover;
-      background-repeat: no-repeat;
-      flex-shrink: 0;
-      position: relative;
-      transition: background-image 0.4s ease;
-    }
+  .main-image {
+    width: 70vw; height: 80vh;
+    border-radius: 16px;
+    box-shadow: 0 0 25px rgba(255,255,255,0.35);
+    background-position: center;
+    background-size: contain;   /* Se ajusta completamente */
+    background-repeat: no-repeat;
+    background-color: #111;     /* Fondo negro en espacio vacío */
+    flex-shrink: 0; position: relative;
+    display: flex; align-items: flex-start; justify-content: flex-end;
+  }
 
-    /* Imágenes pequeñas a los lados */
-    .side-image {
-      width: 15vw;
-      height: 40vh;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(255,255,255,0.4);
-      background-position: center;
-      background-size: cover;
-      background-repeat: no-repeat;
-      cursor: pointer;
-      transition: transform 0.3s, opacity 0.3s;
-      opacity: 1;
-    }
-    .side-image:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 15px rgba(255,255,255,0.7);
-    }
+  .side-image {
+    width: 15vw; height: 40vh;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(255,255,255,0.25);
+    background-position: center;
+    background-size: contain;   /* Se ajusta completamente */
+    background-repeat: no-repeat;
+    background-color: #111;     /* Fondo negro */
+    cursor: pointer;
+  }
+  .side-image.hidden { opacity: 0; pointer-events: none; }
+  .side-left { margin-right: 20px; }
+  .side-right { margin-left: 20px; }
 
-    /* Cuando no hay imagen lateral mostrar invisible */
-    .side-image.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
+  .arrow {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    background: rgba(255,255,255,0.18);
+    border: 0; border-radius: 50%;
+    width: 50px; height: 50px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; user-select: none; z-index: 10;
+  }
+  .arrow:hover { background: rgba(255,255,255,0.35); }
+  .arrow-left { left: 10px; }
+  .arrow-right { right: 10px; }
+  .arrow svg { width: 28px; height: 28px; fill: white; }
 
-    .side-left {
-      margin-right: 20px;
-    }
-    .side-right {
-      margin-left: 20px;
-    }
+  .btn-delete {
+    position: absolute; top: 10px; right: 10px;
+    background: rgba(220,53,69,0.9); border: none;
+    border-radius: 10px; color: white;
+    padding: 8px 14px; font-size: 14px;
+    cursor: pointer; display: none;
+  }
 
-    /* Flechas para cambiar imagen */
-    .arrow {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: background 0.3s;
-      user-select: none;
-      z-index: 10;
-    }
-    .arrow:hover {
-      background: rgba(255, 255, 255, 0.5);
-    }
-    .arrow-left {
-      left: 10px;
-    }
-    .arrow-right {
-      right: 10px;
-    }
+  .btn-add {
+    position: fixed; top: 20px; right: 20px;
+    background: #28a745; border: none; border-radius: 50%;
+    width: 48px; height: 48px; color: white; font-size: 28px;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+  }
+  .btn-add:hover { background: #218838; }
 
-    .arrow svg {
-      width: 28px;
-      height: 28px;
-      fill: white;
-    }
+  #fileInput { display: none; }
 
-    /* Botones para agregar y eliminar imágenes */
-    .btn-add {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: #28a745;
-      border: none;
-      border-radius: 50%;
-      width: 48px;
-      height: 48px;
-      color: white;
-      font-size: 30px;
-      cursor: pointer;
-      box-shadow: 0 0 15px #28a745;
-      user-select: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.3s;
-      z-index: 15;
-    }
-    .btn-add:hover {
-      background: #218838;
-    }
-
-    .btn-delete {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: rgba(220, 53, 69, 0.8);
-      border: none;
-      border-radius: 5px;
-      color: white;
-      padding: 6px 12px;
-      font-size: 14px;
-      cursor: pointer;
-      user-select: none;
-      transition: background 0.3s;
-      z-index: 20;
-      display: none;
-    }
-    .btn-delete:hover {
-      background: rgba(220, 53, 69, 1);
-    }
-
-    /* Input file oculto */
-    #fileInput {
-      display: none;
-    }
-
-    /* Mensaje cuando no hay imágenes */
-    .empty-message {
-      color: #ccc;
-      font-size: 1.5rem;
-      margin-top: 40vh;
-      text-align: center;
-      user-select: none;
-    }
-
-  </style>
+  .empty-message {
+    color: #bbb; font-size: 1.4rem;
+    margin-top: 40vh; text-align: center; display: none;
+  }
+</style>
 </head>
 <body>
 
-  <h1>Rollo Digital Avanzado</h1>
+<h1>Rollo Digital sin Animación y Ajuste Completo</h1>
 
-  <div class="gallery-container" id="gallery">
-    <!-- Flechas -->
-    <div class="arrow arrow-left" id="arrowLeft" aria-label="Anterior">
-      <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-    </div>
+<div class="gallery-container" id="gallery">
+  <button class="arrow arrow-left" id="arrowLeft"><svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg></button>
+  <button class="arrow arrow-right" id="arrowRight"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg></button>
 
-    <div class="arrow arrow-right" id="arrowRight" aria-label="Siguiente">
-      <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-    </div>
-
-    <!-- Imágenes: lateral izquierda, principal, lateral derecha -->
-    <div class="side-image side-left" id="sideLeft"></div>
-    <div class="main-image" id="mainImage">
-      <button class="btn-delete" id="btnDelete">Eliminar</button>
-    </div>
-    <div class="side-image side-right" id="sideRight"></div>
+  <div class="side-image side-left" id="sideLeft"></div>
+  <div class="main-image" id="mainImage">
+    <button class="btn-delete" id="btnDelete">Eliminar</button>
   </div>
+  <div class="side-image side-right" id="sideRight"></div>
+</div>
 
-  <!-- Botón para agregar imágenes -->
-  <button class="btn-add" id="btnAdd" title="Agregar imágenes">+</button>
-  <input type="file" id="fileInput" multiple accept="image/*" />
+<button class="btn-add" id="btnAdd">+</button>
+<input type="file" id="fileInput" multiple accept="image/*">
 
-  <div class="empty-message" id="emptyMessage" style="display:none;">
-    No hay imágenes en la galería.<br>Usá el botón + para agregar.
-  </div>
+<div class="empty-message" id="emptyMessage">
+  No hay imágenes en la galería.<br>Usá el botón + para agregar.
+</div>
 
-  <script>
-    let images = [
-    'https://www.xtrafondos.com/wallpapers/los-pitufos-el-pueblo-perdido-2685.jpg',
-    'https://wallpapers.com/images/hd/the-smurfs-movie-2017-lfnwtpmwq21d92sc.jpg',,
-  ];
-  
+<script>
+let images = [
+  'https://pbs.twimg.com/media/D91nrqJX4AUgbjQ?format=jpg&name=large',
+  'https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/media/image/2021/06/sirenita-2376873.jpg?tf=3840x685.jpg',
+  'https://cdn.shopify.com/s/files/1/0469/3927/5428/files/Screenshot_2024-08-19_at_14.36.56.png?v=1724071042',
+  'https://taekook.bimoribox.com/wp-content/uploads/2024/10/1679380890-frtbnudaiaalnpe.jpg',
+  'https://www.xtrafondos.com/wallpapers/cars-3-2724.jpg'
+];
 
-    const mainImage = document.getElementById('mainImage');
-    const sideLeft = document.getElementById('sideLeft');
-    const sideRight = document.getElementById('sideRight');
-    const btnDelete = document.getElementById('btnDelete');
-    const btnAdd = document.getElementById('btnAdd');
-    const fileInput = document.getElementById('fileInput');
-    const arrowLeft = document.getElementById('arrowLeft');
-    const arrowRight = document.getElementById('arrowRight');
-    const emptyMessage = document.getElementById('emptyMessage');
-    const gallery = document.getElementById('gallery');
+// Forzar que Pitufos sea la primera
+const pitufosIndex = images.findIndex(url => url.includes('pitufos'));
+if(pitufosIndex > 0){
+  const pitufosURL = images.splice(pitufosIndex,1)[0];
+  images.unshift(pitufosURL);
+}
 
-    let currentIndex = 0;
+const mainImage = document.getElementById('mainImage');
+const sideLeft = document.getElementById('sideLeft');
+const sideRight = document.getElementById('sideRight');
+const btnDelete = document.getElementById('btnDelete');
+const btnAdd = document.getElementById('btnAdd');
+const fileInput = document.getElementById('fileInput');
+const arrowLeft = document.getElementById('arrowLeft');
+const arrowRight = document.getElementById('arrowRight');
+const emptyMessage = document.getElementById('emptyMessage');
+const gallery = document.getElementById('gallery');
 
-    function showImages() {
-      if(images.length === 0) {
-        gallery.style.display = 'none';
-        emptyMessage.style.display = 'block';
-        return;
-      } else {
-        gallery.style.display = 'flex';
-        emptyMessage.style.display = 'none';
-      }
-      console.log("Mostrando imagen index:", currentIndex, "URL:", images[currentIndex]);
+let currentIndex = 0;
 
-      mainImage.style.backgroundImage = `url('${images[currentIndex]}')`;
-      btnDelete.style.display = 'block';
+function setSide(el, url){
+  if(!url){ el.classList.add('hidden'); el.style.backgroundImage=''; return; }
+  el.classList.remove('hidden');
+  el.style.backgroundImage=`url('${url}')`;
+}
 
-      // Imagen izquierda
-      if(currentIndex > 0) {
-        sideLeft.style.backgroundImage = `url('${images[currentIndex - 1]}')`;
-        sideLeft.classList.remove('hidden');
-        arrowLeft.style.display = 'flex';
-      } else {
-        sideLeft.style.backgroundImage = '';
-        sideLeft.classList.add('hidden');
-        arrowLeft.style.display = 'none';
-      }
+function showImages(){
+  if(images.length===0){
+    gallery.style.display='none';
+    emptyMessage.style.display='block';
+    mainImage.style.backgroundImage='';
+    btnDelete.style.display='none';
+    return;
+  }
 
-      // Imagen derecha
-      if(currentIndex < images.length - 1) {
-        sideRight.style.backgroundImage = `url('${images[currentIndex + 1]}')`;
-        sideRight.classList.remove('hidden');
-        arrowRight.style.display = 'flex';
-      } else {
-        sideRight.style.backgroundImage = '';
-        sideRight.classList.add('hidden');
-        arrowRight.style.display = 'none';
-      }
-    }
+  gallery.style.display='flex';
+  emptyMessage.style.display='none';
+  mainImage.style.backgroundImage=`url('${images[currentIndex]}')`;
+  btnDelete.style.display='block';
 
-    function prevImage() {
-      if(images.length === 0) return;
-      if(currentIndex > 0) {
-        currentIndex--;
-        showImages();
-      }
-    }
+  setSide(sideLeft, currentIndex>0 ? images[currentIndex-1] : null);
+  setSide(sideRight, currentIndex<images.length-1 ? images[currentIndex+1] : null);
 
-    function nextImage() {
-      if(images.length === 0) return;
-      if(currentIndex < images.length - 1) {
-        currentIndex++;
-        showImages();
-      }
-    }
+  arrowLeft.style.display=currentIndex>0?'flex':'none';
+  arrowRight.style.display=currentIndex<images.length-1?'flex':'none';
+}
 
-    arrowLeft.addEventListener('click', prevImage);
-    arrowRight.addEventListener('click', nextImage);
-    sideLeft.addEventListener('click', prevImage);
-    sideRight.addEventListener('click', nextImage);
+function prevImage(){ if(currentIndex>0){currentIndex--; showImages();} }
+function nextImage(){ if(currentIndex<images.length-1){currentIndex++; showImages();} }
 
-    btnDelete.addEventListener('click', () => {
-      if(images.length === 0) return;
-      images.splice(currentIndex, 1);
-      if(currentIndex >= images.length) {
-        currentIndex = images.length - 1;
-      }
-      showImages();
-    });
+arrowLeft.addEventListener('click', prevImage);
+arrowRight.addEventListener('click', nextImage);
+sideLeft.addEventListener('click', prevImage);
+sideRight.addEventListener('click', nextImage);
 
-    btnAdd.addEventListener('click', () => {
-      fileInput.click();
-    });
+btnDelete.addEventListener('click', ()=>{
+  if(images.length===0) return;
+  images.splice(currentIndex,1);
+  if(currentIndex>=images.length) currentIndex=images.length-1;
+  showImages();
+});
 
-    fileInput.addEventListener('change', (event) => {
-      const files = Array.from(event.target.files);
-      if(files.length === 0) return;
-      files.forEach(file => {
-        const url = URL.createObjectURL(file);
-        images.push(url);
-      });
-      if(images.length === files.length) {
-        currentIndex = 0;
-      }
-      showImages();
-      fileInput.value = '';
-    });
+btnAdd.addEventListener('click', ()=>fileInput.click());
+fileInput.addEventListener('change', e=>{
+  const files=Array.from(e.target.files);
+  if(files.length===0) return;
+  const urls=files.map(f=>URL.createObjectURL(f));
+  images.push(...urls);
+  if(images.length===urls.length) currentIndex=0;
+  showImages();
+  fileInput.value='';
+});
 
-    showImages();
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowLeft') prevImage();
+  else if(e.key==='ArrowRight') nextImage();
+});
 
-    document.addEventListener('keydown', e => {
-      if(e.key === 'ArrowLeft') prevImage();
-      else if(e.key === 'ArrowRight') nextImage();
-    });
-  </script>
+// Mostrar inicial
+showImages();
+</script>
 </body>
 </html>
