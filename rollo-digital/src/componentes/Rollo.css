@@ -1,0 +1,135 @@
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background: #000;
+    color: #fff;
+    overflow: hidden; /* Sin scroll */
+  }
+  
+  .rollo-container {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #000;
+  }
+  
+  /* Imagen principal */
+.main-image {
+  width: 70vw; 
+  height: 80vh;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+  
+  /* Flechas */
+  .arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0,0,0,0.4);
+    color: #fff;
+    font-size: 2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: 0.3s;
+  }
+  
+  .arrow:hover { background: rgba(0,0,0,0.6); }
+  .arrow-left { left: 20px; }
+  .arrow-right { right: 20px; }
+  
+  /* Botones flotantes */
+  .controls {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 10;
+  }
+  
+  .controls button {
+    background: rgba(0,0,0,0.5);
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .controls button:hover { background: rgba(0,0,0,0.8); }
+  
+  /* Miniaturas */
+  .thumbnails {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 5px;
+    overflow-x: auto;
+    max-width: 90%;
+    z-index: 5;
+  }
+  
+  /* Candado */
+.lock-icon {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.5rem;
+    color: rgba(255,255,255,0.7);
+    pointer-events: none; /* No interfiere con clics */
+  }
+.tooltip {
+  position: absolute;
+  bottom: 80px; /* arriba de los controles */
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.8);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  pointer-events: none; /* no interfiere con clics */
+  white-space: nowrap;
+  z-index: 15;
+}
+  
+  .thumb {
+    width: 60px;
+    height: 40px;
+    border-radius: 4px;
+    background-position: center;
+    background-size: cover;
+    cursor: pointer;
+    border: 2px solid transparent;
+    flex-shrink: 0;
+    transition: 0.3s;
+  }
+  
+  .thumb.active { border: 2px solid #fff; }
+  
+  /* Responsivo */
+  @media (max-width: 768px) {
+    .arrow { width: 40px; height: 40px; font-size: 1.5rem; }
+    .controls button { font-size: 1.2rem; padding: 6px; }
+    .thumb { width: 40px; height: 30px; }
+  }
+  
