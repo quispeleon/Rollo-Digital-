@@ -1,9 +1,9 @@
-body {
+/*body {
     margin: 0;
     font-family: 'Arial', sans-serif;
     background: #000;
     color: #fff;
-    overflow: hidden; /* Sin scroll */
+    overflow: hidden; /* Sin scroll 
   }
   
   .rollo-container {
@@ -16,7 +16,7 @@ body {
     background: #000;
   }
   
-  /* Imagen principal */
+   Imagen principal 
 .main-image {
   width: 70vw; 
   height: 80vh;
@@ -26,7 +26,7 @@ body {
 }
 
   
-  /* Flechas */
+   Flechas 
   .arrow {
     position: absolute;
     top: 50%;
@@ -50,7 +50,7 @@ body {
   .arrow-left { left: 20px; }
   .arrow-right { right: 20px; }
   
-  /* Botones flotantes */
+   Botones flotantes 
   .controls {
     position: absolute;
     top: 20px;
@@ -74,7 +74,7 @@ body {
   
   .controls button:hover { background: rgba(0,0,0,0.8); }
   
-  /* Miniaturas */
+   Miniaturas 
   .thumbnails {
     position: absolute;
     bottom: 20px;
@@ -87,7 +87,7 @@ body {
     z-index: 5;
   }
   
-  /* Candado */
+  Candado
 .lock-icon {
     position: absolute;
     bottom: 20px;
@@ -95,11 +95,11 @@ body {
     transform: translateX(-50%);
     font-size: 1.5rem;
     color: rgba(255,255,255,0.7);
-    pointer-events: none; /* No interfiere con clics */
+    pointer-events: none;  No interfiere con clics 
   }
 .tooltip {
   position: absolute;
-  bottom: 80px; /* arriba de los controles */
+  bottom: 80px;  arriba de los controles 
   left: 50%;
   transform: translateX(-50%);
   background: rgba(0,0,0,0.8);
@@ -107,7 +107,7 @@ body {
   padding: 6px 12px;
   border-radius: 6px;
   font-size: 0.9rem;
-  pointer-events: none; /* no interfiere con clics */
+  pointer-events: none;  no interfiere con clics 
   white-space: nowrap;
   z-index: 15;
 }
@@ -126,10 +126,9 @@ body {
   
   .thumb.active { border: 2px solid #fff; }
   
-  /* Responsivo */
+  Responsivo 
   @media (max-width: 768px) {
     .arrow { width: 40px; height: 40px; font-size: 1.5rem; }
     .controls button { font-size: 1.2rem; padding: 6px; }
     .thumb { width: 40px; height: 30px; }
-  }
-  
+  }*/

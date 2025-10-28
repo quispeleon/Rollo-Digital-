@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+/*import React, { useState, useEffect, useRef } from "react";
 import "./Rollo.css";
 
 export default function Rollo() {
@@ -70,7 +70,7 @@ export default function Rollo() {
 
   return (
     <div className="rollo-container">
-      {/* Sidebar Álbumes */}
+      {/* Sidebar Álbumes }
       <div className="album-container">
         <ul>
           {albums.map((alb, i) => (
@@ -83,7 +83,7 @@ export default function Rollo() {
         </ul>
       </div>
 
-      {/* Galería */}
+      {/* Galería }
       <div className="gallery-container">
         {!videoMode && currentIndex > 0 &&
           <button className="arrow arrow-left" onClick={prevImage}>
@@ -103,7 +103,7 @@ export default function Rollo() {
           <div className="empty-message">No hay imágenes en este álbum.</div>
         }
 
-        {/* Botones */}
+        {/* Botones }
         {!videoMode &&
           <>
             <button className="btn-add" title="Agregar imágenes" onClick={() => document.getElementById("fileInput").click()}>+</button>
@@ -116,7 +116,7 @@ export default function Rollo() {
           <button className="btn-video" title="Pausar video" onClick={() => setVideoMode(false)}>⏸</button>
         }
 
-        {/* Candado */}
+        {/* Candado }
         <div className="lock-icon">🔒</div>
       </div>
 
