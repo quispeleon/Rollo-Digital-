@@ -1,11 +1,12 @@
-// src/App.jsx
 import React from "react";
-import Album from "./componentes/Album";
+import Header from "./componentes/Header.jsx";
+import Album from "./componentes/Album.jsx";
+import "./App.css";
 
 function App() {
   return (
     <div className="App">
-      <h1>Rollo Digital</h1>
+      <Header />
       <Album />
     </div>
   );

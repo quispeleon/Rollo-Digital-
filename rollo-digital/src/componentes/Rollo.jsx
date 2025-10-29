@@ -1,31 +1,17 @@
-/*import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./Rollo.css";
 
-export default function Rollo() {
-  // Álbumes
-  const [albums, setAlbums] = useState([
-    { name: "Vacaciones", images: [
-      "https://pbs.twimg.com/media/D91nrqJX4AUgbjQ?format=jpg&name=large",
-      "https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/media/image/2021/06/sirenita-2376873.jpg?tf=3840x685.jpg",
-      "https://cdn.shopify.com/s/files/1/0469/3927/5428/files/Screenshot_2024-08-19_at_14.36.56.png?v=1724071042"
-    ] },
-    { name: "Familia", images: [] }
-  ]);
-  const [currentAlbumIndex, setCurrentAlbumIndex] = useState(0);
-  const [images, setImages] = useState(albums[0].images);
+export default function Rollo({ images = [], setAlbums, currentAlbum }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [videoMode, setVideoMode] = useState(false);
   const videoRef = useRef(null);
 
-  // Actualizar imágenes al cambiar de álbum
   useEffect(() => {
-    setImages(albums[currentAlbumIndex].images);
     setCurrentIndex(0);
-  }, [currentAlbumIndex, albums]);
+  }, [images]);
 
-  // Video automático
   useEffect(() => {
-    if(videoMode) {
+    if (videoMode && images.length > 1) {
       videoRef.current = setInterval(() => {
         setCurrentIndex(prev => (prev + 1) % images.length);
       }, 3000);
@@ -35,92 +21,102 @@ export default function Rollo() {
     return () => clearInterval(videoRef.current);
   }, [videoMode, images]);
 
-  const prevImage = () => setCurrentIndex(i => i > 0 ? i - 1 : i);
-  const nextImage = () => setCurrentIndex(i => i < images.length - 1 ? i + 1 : i);
+  const prevImage = () =>
+    setCurrentIndex(i => (i > 0 ? i - 1 : images.length - 1));
+  const nextImage = () =>
+    setCurrentIndex(i => (i < images.length - 1 ? i + 1 : 0));
 
-  // Agregar imagen
   const handleAddImage = e => {
     const files = Array.from(e.target.files);
-    if(files.length === 0) return;
-    const urls = files.map(f => URL.createObjectURL(f));
-    const newAlbums = [...albums];
-    newAlbums[currentAlbumIndex].images.push(...urls);
-    setAlbums(newAlbums);
-    e.target.value = '';
+    if (!files.length) return;
+
+    setAlbums(albs => {
+      const newAlbums = [...albs];
+      const currentImages = newAlbums[currentAlbum].images;
+      files.forEach(file => {
+        const exists = currentImages.some(img => img.endsWith(file.name));
+        if (!exists) {
+          currentImages.push(URL.createObjectURL(file));
+        }
+      });
+      return newAlbums;
+    });
+
+    e.target.value = "";
   };
 
-  // Eliminar imagen
-  const handleDelete = () => {
-    if(images.length === 0) return;
-    const newAlbums = [...albums];
-    newAlbums[currentAlbumIndex].images.splice(currentIndex, 1);
-    setAlbums(newAlbums);
-    if(currentIndex >= newAlbums[currentAlbumIndex].images.length)
-      setCurrentIndex(newAlbums[currentAlbumIndex].images.length -1);
+  const handleDeleteImage = () => {
+    setAlbums(albs => {
+      const newAlbums = [...albs];
+      newAlbums[currentAlbum].images.splice(currentIndex, 1);
+      return newAlbums;
+    });
+    setCurrentIndex(i => Math.max(0, i - 1));
   };
 
-  // Agregar álbum
-  const handleAddAlbum = () => {
-    const name = prompt("Nombre del álbum:");
-    if(name) {
-      setAlbums([...albums, { name, images: [] }]);
-      setCurrentAlbumIndex(albums.length); // Seleccionar nuevo álbum
-    }
+  // ✅ Nuevo: eliminar todo el álbum
+  const handleDeleteAlbum = () => {
+    setAlbums(albs => {
+      const newAlbums = [...albs];
+      newAlbums.splice(currentAlbum, 1);
+      return newAlbums;
+    });
   };
 
   return (
     <div className="rollo-container">
-      {/* Sidebar Álbumes }
-      <div className="album-container">
-        <ul>
-          {albums.map((alb, i) => (
-            <li key={i} className={i===currentAlbumIndex ? "active album" : "album"}
-                onClick={() => setCurrentAlbumIndex(i)}>
-              {alb.name}
-            </li>
-          ))}
-          <li className="add-album" onClick={handleAddAlbum}>+ Álbum</li>
-        </ul>
-      </div>
+      {images.length > 0 ? (
+        <div
+          className="main-image"
+          style={{ backgroundImage: `url(${images[currentIndex]})` }}
+        ></div>
+      ) : (
+        <p>No hay imágenes en este álbum.</p>
+      )}
 
-      {/* Galería }
-      <div className="gallery-container">
-        {!videoMode && currentIndex > 0 &&
+      {!videoMode && images.length > 0 && (
+        <>
           <button className="arrow arrow-left" onClick={prevImage}>
             &#10094;
           </button>
-        }
-        {!videoMode && currentIndex < images.length -1 &&
           <button className="arrow arrow-right" onClick={nextImage}>
             &#10095;
           </button>
-        }
 
-        {images.length > 0 &&
-          <div className="main-image" style={{backgroundImage: `url(${images[currentIndex]})`}}></div>
-        }
-        {images.length === 0 &&
-          <div className="empty-message">No hay imágenes en este álbum.</div>
-        }
+          <div className="controls">
+            <button onClick={() => document.getElementById("fileInput").click()}>
+              +
+            </button>
+            <button onClick={handleDeleteImage}>🗑 Imagen</button>
+            <button onClick={handleDeleteAlbum}>🗑 Álbum</button>
+            {images.length > 1 && <button onClick={() => setVideoMode(true)}>▶</button>}
+          </div>
+        </>
+      )}
 
-        {/* Botones }
-        {!videoMode &&
-          <>
-            <button className="btn-add" title="Agregar imágenes" onClick={() => document.getElementById("fileInput").click()}>+</button>
-            <button className="btn-delete" title="Eliminar imagen" onClick={handleDelete}>🗑</button>
-            <button className="btn-video" title="Ver en video" onClick={() => setVideoMode(true)}>▶</button>
-          </>
-        }
+      {videoMode && <button onClick={() => setVideoMode(false)}>⏸</button>}
 
-        {videoMode &&
-          <button className="btn-video" title="Pausar video" onClick={() => setVideoMode(false)}>⏸</button>
-        }
+      <input
+        type="file"
+        id="fileInput"
+        multiple
+        accept="image/*"
+        onChange={handleAddImage}
+        style={{ display: "none" }}
+      />
 
-        {/* Candado }
-        <div className="lock-icon">🔒</div>
-      </div>
-
-      <input type="file" id="fileInput" multiple accept="image/*" onChange={handleAddImage} style={{display:'none'}}/>
+      {images.length > 0 && (
+        <div className="thumbnails">
+          {images.map((img, i) => (
+            <div
+              key={i}
+              className={`thumb ${i === currentIndex ? "active" : ""}`}
+              style={{ backgroundImage: `url(${img})` }}
+              onClick={() => setCurrentIndex(i)}
+            ></div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

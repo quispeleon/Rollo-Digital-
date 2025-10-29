@@ -1,22 +1,78 @@
-// src/components/Album.jsx
-import React from "react";
-import ImageCard from "./ImageCard";
+import React, { useState } from "react";
+import Rollo from "./Rollo.jsx";
+import "./Album.css";
 
-// Importar imágenes
-import goofy from "../assets/goofy.jpg";
-import mickey from "../assets/mickey.jpeg";
-import pluto from "../assets/pluto.png";
+export default function Album() {
+  const [albums, setAlbums] = useState([
+    {
+      name: "Vacaciones",
+      images: [
+        "/Imagenes/Burro.webp",
+        "/Imagenes/MonaLisa.webp",
+        "/Imagenes/tinkerbell.webp"
+      ]
+    },
+    { name: "Familia", images: [] }
+  ]);
 
-const images = [goofy, mickey, pluto];
+  const [currentAlbum, setCurrentAlbum] = useState(0);
 
-function Album() {
+  // Agregar un nuevo álbum
+  const handleAddAlbum = () => {
+    const name = prompt("Nombre del álbum:");
+    if (name) {
+      setAlbums([...albums, { name, images: [] }]);
+      setCurrentAlbum(albums.length);
+    }
+  };
+
+  // Eliminar un álbum
+  const handleDeleteAlbum = (index) => {
+    setAlbums(albs => {
+      const newAlbums = [...albs];
+      newAlbums.splice(index, 1);
+
+      // Ajustar currentAlbum si se eliminó el actual o el último
+      if (currentAlbum >= newAlbums.length) {
+        setCurrentAlbum(newAlbums.length - 1);
+      }
+
+      return newAlbums;
+    });
+  };
+
   return (
-    <div className="album">
-      {images.map((img, index) => (
-        <ImageCard key={index} src={img} />
-      ))}
+    <div className="album-container">
+      {/* Barra lateral */}
+      <div className="sidebar">
+        <ul>
+          {albums.map((a, i) => (
+            <li key={i} className={i === currentAlbum ? "active" : ""}>
+              <span onClick={() => setCurrentAlbum(i)}>{a.name}</span>
+              <button 
+                className="delete-album" 
+                onClick={() => handleDeleteAlbum(i)}
+              >
+                🗑
+              </button>
+            </li>
+          ))}
+          <li className="add-album" onClick={handleAddAlbum}>+ Álbum</li>
+        </ul>
+      </div>
+
+      {/* Rollo principal */}
+      <div className="main-rollo">
+        {albums.length > 0 ? (
+          <Rollo
+            images={albums[currentAlbum].images}
+            setAlbums={setAlbums}
+            currentAlbum={currentAlbum}
+          />
+        ) : (
+          <p>No hay álbumes disponibles.</p>
+        )}
+      </div>
     </div>
   );
 }
-
-export default Album;

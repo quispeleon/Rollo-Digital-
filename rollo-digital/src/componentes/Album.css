@@ -1,0 +1,27 @@
+.album-container {
+  display: flex;
+  gap: 1rem;
+}
+
+.sidebar {
+  width: 200px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.sidebar li.active {
+  font-weight: bold;
+  background-color: #eee;
+}
+
+.add-album {
+  color: blue;
+}
