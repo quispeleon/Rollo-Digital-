@@ -1,28 +1,38 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import "./Rollo.css";
 
 export default function Rollo({ images = [], setAlbums, currentAlbum }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [videoMode, setVideoMode] = useState(false);
-  const videoRef = useRef(null);
 
   useEffect(() => {
     setCurrentIndex(0);
   }, [images]);
 
+  // Video automático sin repetir imágenes hasta mostrar todas
   useEffect(() => {
-    if (videoMode && images.length > 1) {
-      videoRef.current = setInterval(() => {
-        setCurrentIndex(prev => (prev + 1) % images.length);
-      }, 3000);
-    } else {
-      clearInterval(videoRef.current);
-    }
-    return () => clearInterval(videoRef.current);
+    if (!videoMode || images.length <= 1) return;
+
+    let remaining = images.map((_, i) => i); // índices de imágenes restantes
+    let interval = setInterval(() => {
+      if (remaining.length === 0) {
+        remaining = images.map((_, i) => i); // reinicia ciclo
+      }
+
+      const randomIdx = Math.floor(Math.random() * remaining.length);
+      const next = remaining[randomIdx];
+
+      setCurrentIndex(next);
+
+      remaining.splice(randomIdx, 1); // eliminar índice ya mostrado
+    }, 3000);
+
+    return () => clearInterval(interval);
   }, [videoMode, images]);
 
   const prevImage = () =>
     setCurrentIndex(i => (i > 0 ? i - 1 : images.length - 1));
+
   const nextImage = () =>
     setCurrentIndex(i => (i < images.length - 1 ? i + 1 : 0));
 
@@ -33,12 +43,20 @@ export default function Rollo({ images = [], setAlbums, currentAlbum }) {
     setAlbums(albs => {
       const newAlbums = [...albs];
       const currentImages = newAlbums[currentAlbum].images;
+
+      // Crear un Set con los nombres de los archivos ya existentes
+      const existingNames = new Set(
+        currentImages.map(img => img.name || img.split("/").pop())
+      );
+
       files.forEach(file => {
-        const exists = currentImages.some(img => img.endsWith(file.name));
-        if (!exists) {
-          currentImages.push(URL.createObjectURL(file));
+        if (!existingNames.has(file.name)) {
+          const url = URL.createObjectURL(file);
+          currentImages.push({ url, name: file.name });
+          existingNames.add(file.name); // prevenir duplicados en la misma carga
         }
       });
+
       return newAlbums;
     });
 
@@ -54,7 +72,6 @@ export default function Rollo({ images = [], setAlbums, currentAlbum }) {
     setCurrentIndex(i => Math.max(0, i - 1));
   };
 
-  // ✅ Nuevo: eliminar todo el álbum
   const handleDeleteAlbum = () => {
     setAlbums(albs => {
       const newAlbums = [...albs];
@@ -68,7 +85,9 @@ export default function Rollo({ images = [], setAlbums, currentAlbum }) {
       {images.length > 0 ? (
         <div
           className="main-image"
-          style={{ backgroundImage: `url(${images[currentIndex]})` }}
+          style={{
+            backgroundImage: `url(${images[currentIndex]?.url || images[currentIndex]})`
+          }}
         ></div>
       ) : (
         <p>No hay imágenes en este álbum.</p>
@@ -111,7 +130,7 @@ export default function Rollo({ images = [], setAlbums, currentAlbum }) {
             <div
               key={i}
               className={`thumb ${i === currentIndex ? "active" : ""}`}
-              style={{ backgroundImage: `url(${img})` }}
+              style={{ backgroundImage: `url(${img.url || img})` }}
               onClick={() => setCurrentIndex(i)}
             ></div>
           ))}
@@ -120,3 +139,4 @@ export default function Rollo({ images = [], setAlbums, currentAlbum }) {
     </div>
   );
 }
+
