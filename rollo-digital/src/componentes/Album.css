@@ -13,12 +13,12 @@
 /* En Album.css, ajusta el sidebar */
 .sidebar {
   width: 280px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 107, 107, 0.05);
   backdrop-filter: blur(15px);
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(146, 106, 106, 0.1);
   padding: 1.5rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 32px rgba(205, 166, 166, 0.2);
   height: fit-content;
   position: sticky;
   top: 100px; /* Ajustado para el header más pequeño */
