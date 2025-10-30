@@ -159,7 +159,7 @@ export default function Album() {
               <div className="album-name" onClick={() => setCurrentAlbum(i)}>
                 {album.name}
                 {album.id === "all-images" && (
-                  <span className="album-badge">Todas</span>
+                  <span className="album-badge"></span>
                 )}
               </div>
               {(!album.id || album.id !== "all-images") && (
