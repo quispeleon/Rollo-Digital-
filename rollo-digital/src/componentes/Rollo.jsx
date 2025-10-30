@@ -83,35 +83,65 @@ export default function Rollo({ images = [], setAlbums, currentAlbum }) {
   return (
     <div className="rollo-container">
       {images.length > 0 ? (
-        <div
-          className="main-image"
-          style={{
-            backgroundImage: `url(${images[currentIndex]?.url || images[currentIndex]})`
-          }}
-        ></div>
+        // En Rollo.jsx, actualiza la parte del main-image:
+        <div className="main-image-container">
+          <div
+            className="main-image"
+            style={{
+              backgroundImage: `url(${images[currentIndex]?.url || images[currentIndex]})`
+            }}
+          ></div>
+          <div className="image-overlay">
+            <div className="image-info">
+              <span className="image-counter">
+                {currentIndex + 1} / {images.length}
+              </span>
+              <span className="image-name">
+                {images[currentIndex]?.name || `Imagen ${currentIndex + 1}`}
+              </span>
+            </div>
+          </div>
+
+          {videoMode && (
+            <div className="video-mode-overlay">
+              Modo Presentación
+            </div>
+          )}
+        </div>
       ) : (
         <p>No hay imágenes en este álbum.</p>
       )}
 
-      {!videoMode && images.length > 0 && (
+      {!videoMode && (
         <>
-          <button className="arrow arrow-left" onClick={prevImage}>
-            &#10094;
-          </button>
-          <button className="arrow arrow-right" onClick={nextImage}>
-            &#10095;
-          </button>
+          {images.length > 0 && (
+            <>
+              <button className="arrow arrow-left" onClick={prevImage}>
+                &#10094;
+              </button>
+              <button className="arrow arrow-right" onClick={nextImage}>
+                &#10095;
+              </button>
+            </>
+          )}
 
           <div className="controls">
             <button onClick={() => document.getElementById("fileInput").click()}>
               +
             </button>
-            <button onClick={handleDeleteImage}>🗑 Imagen</button>
-            <button onClick={handleDeleteAlbum}>🗑 Álbum</button>
-            {images.length > 1 && <button onClick={() => setVideoMode(true)}>▶</button>}
+            {images.length > 0 && (
+              <>
+                <button onClick={handleDeleteImage}>🗑 Imagen</button>
+                <button onClick={handleDeleteAlbum}>🗑 Álbum</button>
+              </>
+            )}
+            {images.length > 1 && (
+              <button onClick={() => setVideoMode(true)}>▶</button>
+            )}
           </div>
         </>
       )}
+
 
       {videoMode && <button onClick={() => setVideoMode(false)}>⏸</button>}
 

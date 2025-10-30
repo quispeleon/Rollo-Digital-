@@ -45,19 +45,27 @@ export default function Album() {
     <div className="album-container">
       {/* Barra lateral */}
       <div className="sidebar">
+        <h2>Mis Álbumes</h2>
         <ul>
           {albums.map((a, i) => (
             <li key={i} className={i === currentAlbum ? "active" : ""}>
-              <span onClick={() => setCurrentAlbum(i)}>{a.name}</span>
-              <button 
-                className="delete-album" 
-                onClick={() => handleDeleteAlbum(i)}
+              <div className="album-name" onClick={() => setCurrentAlbum(i)}>
+                {a.name}
+              </div>
+              <button
+                className="delete-album"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDeleteAlbum(i);
+                }}
               >
                 🗑
               </button>
             </li>
           ))}
-          <li className="add-album" onClick={handleAddAlbum}>+ Álbum</li>
+          <li className="add-album" onClick={handleAddAlbum}>
+            Nuevo Álbum
+          </li>
         </ul>
       </div>
 

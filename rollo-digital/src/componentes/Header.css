@@ -1,39 +1,87 @@
+/* Header.css */
 .header {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.8rem 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
-  background-color: #111;
-  color: #fff;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  border-bottom: 1px solid #333;
 }
 
 .header h1 {
-  font-size: 1.8rem;
-  letter-spacing: 2px;
-  background: linear-gradient(90deg, #00c3ff, #ffff1c);
+  background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -0.3px;
 }
 
 .header nav ul {
-  list-style: none;
   display: flex;
+  list-style: none;
   gap: 1.5rem;
-  margin: 0;
-  padding: 0;
 }
 
 .header nav a {
-  color: #fff;
+  color: #ffffff;
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.3s;
+  font-size: 0.95rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.header nav a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.header nav a:hover::before {
+  left: 100%;
 }
 
 .header nav a:hover {
-  color: #00c3ff;
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Responsive para el header */
+@media (max-width: 768px) {
+  .header {
+    padding: 0.7rem 1rem;
+  }
+  
+  .header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .header nav ul {
+    gap: 1rem;
+  }
+  
+  .header nav a {
+    font-size: 0.9rem;
+    padding: 0.3rem 0.6rem;
+  }
 }

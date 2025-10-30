@@ -1,27 +1,157 @@
+/* Album.css */
 .album-container {
   display: flex;
-  gap: 1rem;
+  flex: 1;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
 }
 
+/* Sidebar Styles */
+/* En Album.css, ajusta el sidebar */
 .sidebar {
-  width: 200px;
+  width: 280px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  height: fit-content;
+  position: sticky;
+  top: 100px; /* Ajustado para el header más pequeño */
+}
+
+.sidebar h2 {
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sidebar h2::before {
+  content: '📁';
+  font-size: 1.2rem;
 }
 
 .sidebar ul {
   list-style: none;
-  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .sidebar li {
-  padding: 10px;
+  padding: 1rem 1.2rem;
+  border-radius: 12px;
   cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid transparent;
+}
+
+.sidebar li:not(.add-album):hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateX(5px);
 }
 
 .sidebar li.active {
-  font-weight: bold;
-  background-color: #eee;
+  background: linear-gradient(135deg, rgba(0, 198, 255, 0.2) 0%, rgba(0, 114, 255, 0.2) 100%);
+  border: 1px solid rgba(0, 198, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 198, 255, 0.2);
+}
+
+.album-name {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.album-name::before {
+  content: '🖼️';
+  font-size: 0.9rem;
+}
+
+.delete-album {
+  background: rgba(255, 59, 59, 0.2);
+  border: 1px solid rgba(255, 59, 59, 0.3);
+  color: #ff3b3b;
+  border-radius: 8px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.8rem;
+}
+
+.delete-album:hover {
+  background: rgba(255, 59, 59, 0.3);
+  transform: scale(1.1);
 }
 
 .add-album {
-  color: blue;
+  background: linear-gradient(135deg, rgba(0, 198, 255, 0.1) 0%, rgba(0, 114, 255, 0.1) 100%);
+  border: 2px dashed rgba(0, 198, 255, 0.5);
+  color: #00c6ff;
+  font-weight: 600;
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.add-album::before {
+  content: '+';
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.add-album:hover {
+  background: linear-gradient(135deg, rgba(0, 198, 255, 0.2) 0%, rgba(0, 114, 255, 0.2) 100%);
+  border-color: #00c6ff;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 198, 255, 0.3);
+}
+
+/* Main Rollo Area */
+.main-rollo {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.empty-album-message {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  padding: 3rem 2rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.1rem;
+  width: 100%;
+  max-width: 500px;
+}
+
+.empty-album-message::before {
+  content: '📷';
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 1rem;
+  opacity: 0.5;
 }
