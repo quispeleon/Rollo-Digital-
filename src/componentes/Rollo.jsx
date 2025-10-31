@@ -144,7 +144,9 @@ export default function Rollo({
               +
             </button>
             {images.length > 0 && (
-              <button onClick={handleDeleteImage}>🗑 Imagen</button>
+              <button
+              id="delete-image"
+              onClick={handleDeleteImage}>🗑</button>
             )}
             {images.length > 1 && (
               <button onClick={() => setVideoMode(true)}>▶</button>

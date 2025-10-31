@@ -5,7 +5,7 @@ function Header() {
    return (
     <header className="header">
       <div className="header-content">
-        <h1>Rollo Digital</h1>
+        <h1>🎥Rollo Digital</h1>
       </div>
     </header>
   );
