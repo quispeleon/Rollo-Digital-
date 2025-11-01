@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Rollo.css";
 
+// Rollo.jsx - MODIFICAR el componente
 export default function Rollo({ 
   images = [], 
   currentAlbumIndex, 
@@ -11,7 +12,7 @@ export default function Rollo({
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [videoMode, setVideoMode] = useState(false);
-
+  const [showAlbumSelector, setShowAlbumSelector] = useState(false);
   useEffect(() => {
     setCurrentIndex(0);
   }, [images, currentAlbumIndex]);
