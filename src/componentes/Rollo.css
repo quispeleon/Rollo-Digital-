@@ -106,18 +106,12 @@
   top: 20px;
   right: 20px;
   display: flex;
-  gap: 8px;
+  gap: 12px;
   z-index: 10;
-  background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  padding: 8px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
 }
 
 .controls button {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: #ffffff;
@@ -130,28 +124,12 @@
   justify-content: center;
   font-size: 1.1rem;
   transition: all 0.3s ease;
-  position: relative;
 }
-
-/* Botón de agregar (+) */
-.controls button:first-child {
-  background: rgba(76, 175, 80, 0.3);
-  border-color: rgba(76, 175, 80, 0.4);
-  font-size: 1.3rem;
-  font-weight: bold;
-}
-
-.controls button:first-child:hover {
-  background: rgba(76, 175, 80, 0.5);
-  transform: translateY(-2px) scale(1.1);
-}
-
-/* Botón de eliminar */
-#delete-image {
-  background: rgba(244, 67, 54, 0.3);
-  border: 1px solid rgba(244, 67, 54, 0.4);
-  color: #ffebee;
-  border-radius: 12px;
+#delete-image{
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #ff3b3b;
+  border-radius: 8px;
   width: 45px;
   height: 45px;
   display: flex;
@@ -159,137 +137,178 @@
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
-
 #delete-image:hover {
-  background: rgba(244, 67, 54, 0.5);
-  transform: translateY(-2px) scale(1.1);
-  box-shadow: 0 5px 15px rgba(244, 67, 54, 0.3);
+  background: rgba(255, 59, 59, 0.3);
+  transform: scale(1.1);
 }
-
-/* Botones de presentación */
-.presentation-buttons {
-  display: flex;
-  gap: 6px;
-  border-left: 1px solid rgba(255, 255, 255, 0.2);
-  padding-left: 8px;
-  margin-left: 4px;
-}
-
-.presentation-buttons button {
-  width: 42px;
-  height: 42px;
-  background: rgba(156, 39, 176, 0.3);
-  border-color: rgba(156, 39, 176, 0.4);
-  font-size: 1rem;
-}
-
-.presentation-buttons button:first-child {
-  background: rgba(103, 58, 183, 0.3);
-  border-color: rgba(103, 58, 183, 0.4);
-}
-
-.presentation-buttons button:last-child {
-  background: rgba(33, 150, 243, 0.3);
-  border-color: rgba(33, 150, 243, 0.4);
-}
-
-.presentation-buttons button:hover {
-  background: rgba(156, 39, 176, 0.5);
-  transform: translateY(-2px) scale(1.1);
-}
-
-.presentation-buttons button:first-child:hover {
-  background: rgba(103, 58, 183, 0.5);
-}
-
-.presentation-buttons button:last-child:hover {
-  background: rgba(33, 150, 243, 0.5);
-}
-
-/* Efectos hover generales */
 .controls button:hover {
-  background: rgba(0, 198, 255, 0.4);
+  background: rgba(0, 198, 255, 0.3);
   border-color: #00c6ff;
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(0, 198, 255, 0.3);
 }
 
-/* Tooltips para los botones */
-.controls button::after {
-  content: attr(title);
+.controls button.delete-btn:hover {
+  background: rgba(255, 59, 59, 0.3);
+  border-color: #587461;
+}
+
+/* Video Mode */
+.video-mode-overlay {
   position: absolute;
-  bottom: -35px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
+  top: 20px;
+  left: 20px;
+  background: rgba(0, 198, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 198, 255, 0.3);
+  color: #00c6ff;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 10;
 }
 
-.controls button:hover::after {
-  opacity: 1;
+.video-mode-overlay::before {
+  content: '▶';
+  font-size: 0.8rem;
 }
 
-/* Responsive para controles */
+/* Thumbnails */
+.thumbnails-container {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.5rem;
+}
+
+.thumbnails {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 10px 0;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 198, 255, 0.5) transparent;
+}
+
+.thumbnails::-webkit-scrollbar {
+  height: 8px;
+}
+
+.thumbnails::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.thumbnails::-webkit-scrollbar-thumb {
+  background: rgba(0, 198, 255, 0.5);
+  border-radius: 10px;
+}
+
+.thumb {
+  width: 80px;
+  height: 60px;
+  border-radius: 12px;
+  background-position: center;
+  background-size: cover;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.thumb::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  transition: background 0.3s ease;
+}
+
+.thumb:hover::before {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.thumb:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 198, 255, 0.3);
+}
+
+.thumb.active {
+  border: 2px solid #00c6ff;
+  box-shadow: 0 0 20px rgba(0, 198, 255, 0.5);
+  transform: scale(1.1);
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.empty-state::before {
+  content: '🎞️';
+  font-size: 4rem;
+  display: block;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rollo-container {
+  animation: fadeIn 0.6s ease;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
-  .controls {
-    top: 15px;
-    right: 15px;
-    gap: 6px;
-    padding: 6px;
+  .album-container {
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
   }
   
-  .controls button {
-    width: 40px;
-    height: 40px;
-    font-size: 1rem;
-  }
-  
-  #delete-image {
-    width: 40px;
-    height: 40px;
-  }
-  
-  .presentation-buttons {
-    gap: 4px;
-    padding-left: 6px;
-    margin-left: 2px;
-  }
-  
-  .presentation-buttons button {
-    width: 38px;
-    height: 38px;
-  }
-  
-  .controls button::after {
-    font-size: 0.7rem;
-    bottom: -30px;
-  }
-}
-
-@media (max-width: 480px) {
-  .controls {
-    flex-wrap: wrap;
-    width: auto;
-    max-width: 120px;
-  }
-  
-  .presentation-buttons {
-    border-left: none;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-    padding-left: 0;
-    padding-top: 6px;
-    margin-left: 0;
-    margin-top: 4px;
+  .sidebar {
     width: 100%;
-    justify-content: center;
+    position: static;
+  }
+  
+  .main-image-container {
+    height: 50vh;
+  }
+  
+  .arrow {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .arrow-left {
+    left: 10px;
+  }
+  
+  .arrow-right {
+    right: 10px;
   }
 }
